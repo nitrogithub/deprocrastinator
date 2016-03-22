@@ -14,6 +14,7 @@
 @property NSMutableArray *tableArray;
 @property UISwipeGestureRecognizer *recognizer;
 
+
 @end
 
 @implementation MainViewController
@@ -41,7 +42,21 @@
     //do you right swipe stuff here. Something usually using theindexPath that you get that way
     CGPoint location = [gestureRecognizer locationInView:self.tableView];
     NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:location];
-    NSLog(@"%@", [self.tableArray objectAtIndex:indexPath.row]);
+
+    if ([self.tableView cellForRowAtIndexPath:indexPath].textLabel.textColor == [UIColor greenColor]) {
+        [self.tableView cellForRowAtIndexPath:indexPath].textLabel.textColor = [UIColor yellowColor];
+
+    } else if ([self.tableView cellForRowAtIndexPath:indexPath].textLabel.textColor == [UIColor yellowColor]){
+        [self.tableView cellForRowAtIndexPath:indexPath].textLabel.textColor = [UIColor redColor];
+
+    } else if ([self.tableView cellForRowAtIndexPath:indexPath].textLabel.textColor == [UIColor redColor]) {
+        [self.tableView cellForRowAtIndexPath:indexPath].textLabel.textColor = [UIColor blackColor];
+
+    } else {
+        [self.tableView cellForRowAtIndexPath:indexPath].textLabel.textColor = [UIColor greenColor];
+
+    }
+    [self.tableView reloadData];
 }
 
 
@@ -62,7 +77,6 @@
 
 // when CELL row is selected, change the color
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    
     if ([tableView cellForRowAtIndexPath:indexPath].backgroundColor == [UIColor greenColor]) {
         [[tableView cellForRowAtIndexPath:indexPath] setBackgroundColor:[UIColor clearColor]];
     } else {
