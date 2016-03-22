@@ -12,6 +12,8 @@
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (weak, nonatomic) IBOutlet UITextField *textField;
 @property NSMutableArray *tableArray;
+@property NSMutableArray *tableArrayBackgroundColor;
+@property NSMutableArray *tableArrayTextColor;
 @property UISwipeGestureRecognizer *recognizer;
 
 
@@ -22,6 +24,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.tableArray = [NSMutableArray new];
+    self.tableArrayBackgroundColor = [NSMutableArray new];
+    self.tableArrayTextColor = [NSMutableArray new];
     UISwipeGestureRecognizer *recognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self
                                                                                      action:@selector(rightSwipe:)];
     [recognizer setDirection:(UISwipeGestureRecognizerDirectionRight)];
