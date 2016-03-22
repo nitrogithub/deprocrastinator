@@ -22,43 +22,30 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.tableArray = [NSMutableArray new];
-    
     UISwipeGestureRecognizer *recognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self
-                                                                                     action:@selector(leftSwipe:)];
-    [recognizer setDirection:(UISwipeGestureRecognizerDirectionLeft)];
-    [self.tableView addGestureRecognizer:recognizer];
-    
-    recognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self
-                                                           action:@selector(rightSwipe:)];
-    recognizer.delegate = self;
+                                                                                     action:@selector(rightSwipe:)];
     [recognizer setDirection:(UISwipeGestureRecognizerDirectionRight)];
     [self.tableView addGestureRecognizer:recognizer];
-    
-    
 }
 
-- (void)rightSwipe:(UISwipeGestureRecognizer *)gestureRecognizer
-{
+
+#pragma mark Swipe Gestures
+
+- (void)rightSwipe:(UISwipeGestureRecognizer *)gestureRecognizer{
     //do you right swipe stuff here. Something usually using theindexPath that you get that way
     CGPoint location = [gestureRecognizer locationInView:self.tableView];
     NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:location];
-
     if ([self.tableView cellForRowAtIndexPath:indexPath].textLabel.textColor == [UIColor greenColor]) {
         [self.tableView cellForRowAtIndexPath:indexPath].textLabel.textColor = [UIColor yellowColor];
-
     } else if ([self.tableView cellForRowAtIndexPath:indexPath].textLabel.textColor == [UIColor yellowColor]){
         [self.tableView cellForRowAtIndexPath:indexPath].textLabel.textColor = [UIColor redColor];
-
     } else if ([self.tableView cellForRowAtIndexPath:indexPath].textLabel.textColor == [UIColor redColor]) {
         [self.tableView cellForRowAtIndexPath:indexPath].textLabel.textColor = [UIColor blackColor];
-
     } else {
         [self.tableView cellForRowAtIndexPath:indexPath].textLabel.textColor = [UIColor greenColor];
-
     }
     [self.tableView reloadData];
 }
-
 
 
 
@@ -101,7 +88,6 @@
     [self.tableArray removeObject:title];
     [self.tableArray insertObject:title atIndex:destinationIndexPath.row];
 }
-
 
 
 
@@ -164,13 +150,6 @@
     
     
 }
-
-
-
-
-
-
-
 
 
 @end
