@@ -22,17 +22,6 @@
     [super viewDidLoad];
     self.tableArray = [NSMutableArray new];
     
-//    self.recognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self
-//                                                                action:@selector(handleSwipeRight:)];
-//    self.recognizer.delegate = self;
-//    [self.recognizer setDirection:(UISwipeGestureRecognizerDirectionRight)];
-//    [self.tableView addGestureRecognizer:self.recognizer];
-//    [self.recognizer release];
-    
-    
-    
-    
-    
     UISwipeGestureRecognizer *recognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self
                                                                                      action:@selector(leftSwipe:)];
     [recognizer setDirection:(UISwipeGestureRecognizerDirectionLeft)];
@@ -40,7 +29,6 @@
     
     recognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self
                                                            action:@selector(rightSwipe:)];
-    
     recognizer.delegate = self;
     [recognizer setDirection:(UISwipeGestureRecognizerDirectionRight)];
     [self.tableView addGestureRecognizer:recognizer];
@@ -48,27 +36,29 @@
     
 }
 
+- (void)rightSwipe:(UISwipeGestureRecognizer *)gestureRecognizer
+{
+    //do you right swipe stuff here. Something usually using theindexPath that you get that way
+    CGPoint location = [gestureRecognizer locationInView:self.tableView];
+    NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:location];
+    NSLog(@"%@", [self.tableArray objectAtIndex:indexPath.row]);
+}
+
 
 
 
 #pragma mark TableView Selections
-
+// how many CELLS to display
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     return self.tableArray.count;
-    ;
 }
 
+// linking the CELLs with the TABLEVIEW
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"deprocrastinator cell"];
     cell.textLabel.text = [self.tableArray objectAtIndex:indexPath.row];
-    NSLog(@"%@", [self.tableArray objectAtIndex:indexPath.row]);
     return cell;
-    
-    
-
 }
-
-
 
 // when CELL row is selected, change the color
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -81,24 +71,17 @@
     [self.tableView reloadData];
 }
 
-// when editing is enabled, what to edit. Clear colors and remove array position
+// when editing is enabled, clear colors and remove array position
 -(void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath{
-    
     [self alertPrompt:indexPath];
-    
-//    
-//    [self.tableArray removeObjectAtIndex:indexPath.row];
-//    [[tableView cellForRowAtIndexPath:indexPath] setBackgroundColor:[UIColor clearColor]];
-//    [self.tableView reloadData];
 }
 
-
-
-
+// Allow moving of rows (cells)
 -(BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath{
     return true;
 }
 
+// When movement does occurs, how it reorders
 -(void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)sourceIndexPath toIndexPath:(NSIndexPath *)destinationIndexPath{
     NSString *title = [self.tableArray objectAtIndex:sourceIndexPath.row];
     [self.tableArray removeObject:title];
@@ -114,6 +97,14 @@
 
 - (IBAction)addButtonPressed:(UIButton *)sender {
     [self addNewRow];
+}
+
+
+-(void)addNewRow{
+    [self.tableArray addObject:self.textField.text];
+    [self.tableView reloadData];
+    self.textField.text = @"";
+    [self.textField resignFirstResponder];
 }
 
 
@@ -133,12 +124,8 @@
 }
 
 
-//- (IBAction)swipeGesture:(UISwipeGestureRecognizer *)sender {
-//    [[self.tableView cellForRowAtIndexPath:sender.indexPath] setBackgroundColor:[UIColor clearColor]];
-//
-//}
 
-
+#pragma mark Alert Popup
 
 
 // Alert Messaging. Prompts users if they really want to delete or not
@@ -168,12 +155,7 @@
 
 
 
--(void)addNewRow{
-    [self.tableArray addObject:self.textField.text];
-    [self.tableView reloadData];
-    self.textField.text = @"";
-    [self.textField resignFirstResponder];
-}
+
 
 
 
